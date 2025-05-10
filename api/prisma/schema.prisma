@@ -6,3 +6,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum TransactionType {
+  DEBIT
+  BANK_SLIP
+  FINANCING
+  CREDIT
+  LOAN_RECEIPT
+  SALE
+  TED_RECEIPT
+  DOC_RECEIPT
+  RENT
+}
+
+model Store {
+  id           String        @id @default(cuid())
+  name         String
+  ownerName    String
+  transactions Transaction[]
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  type          TransactionType
+  transactionAt DateTime
+  value         Float
+  cpf           String          @db.Char(11)
+  card          String          @db.Char(12)
+  storeId       String
+  store         Store           @relation(fields: [storeId], references: [id])
+}
