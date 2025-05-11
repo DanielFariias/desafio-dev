@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export type StoreWithBalance = {
   id: string;
   name: string;
@@ -10,4 +12,11 @@ export type StoreQueryParams = {
   order?: string;
   page?: number;
   limit?: number;
+};
+
+export type FindAllWithBalanceParams = {
+  name?: Prisma.Sql;
+  order?: string;
+  limit?: number;
+  offset?: number;
 };
