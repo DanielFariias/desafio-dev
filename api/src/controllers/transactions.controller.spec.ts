@@ -110,7 +110,7 @@ describe('Transactions Controller', () => {
     expect(body.duplicates).toBe(0);
   });
 
-  it.skip('should ignore empty lines in CNAB file', async () => {
+  it('should ignore empty lines in CNAB file', async () => {
     const cnabContent = ['', sampleCNABLine, ''].join('\n');
 
     const form = createUploadForm(cnabContent);
