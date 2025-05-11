@@ -29,6 +29,18 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
   }
 
   async create(data: CreateTransactionParams) {
+    const exists = await this.findByUniqueKey({
+      storeId: data.storeId,
+      transactionAt: data.transactionAt,
+      card: data.card,
+      cpf: data.cpf,
+      type: data.type,
+    });
+
+    if (exists) {
+      throw { code: 'P2002' };
+    }
+
     const transaction: Transaction = {
       id: randomUUID(),
       storeId: data.storeId,

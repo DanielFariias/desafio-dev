@@ -19,12 +19,19 @@ export function uploadTransactionsController(
 
     let totalTransactions = 0;
     let duplicatedTransactions = 0;
+    let invalidLines = 0;
 
     await pipeline(data.file, split2(), async (source) => {
       for await (const line of source) {
         if (!line) continue;
 
-        const parsed = parseCNABLine(line.toString());
+        let parsed;
+        try {
+          parsed = parseCNABLine(line.toString());
+        } catch {
+          invalidLines++;
+          continue;
+        }
 
         let store = await storesRepository.findByNameAndOwner(
           parsed.storeName,
@@ -63,6 +70,7 @@ export function uploadTransactionsController(
       message: 'File processed successfully',
       inserted: totalTransactions,
       duplicates: duplicatedTransactions,
+      invalid: invalidLines,
     });
   };
 }

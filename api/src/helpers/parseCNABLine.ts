@@ -10,6 +10,34 @@ export function parseCNABLine(line: string) {
   const storeOwner = line.substring(48, 62).trim();
   const storeName = line.substring(62, 81).trim();
 
+  if (!CNAB_TYPE_TO_ENUM[type as keyof typeof CNAB_TYPE_TO_ENUM]) {
+    throw new Error('Invalid CNAB type');
+  }
+
+  if (!/^\d{8}$/.test(dateStr)) {
+    throw new Error('Invalid date format');
+  }
+
+  if (!/^\d{6}$/.test(timeStr)) {
+    throw new Error('Invalid time format');
+  }
+
+  if (!/^\d{11}$/.test(cpf)) {
+    throw new Error('Invalid CPF');
+  }
+
+  if (!card) {
+    throw new Error('Card field is required');
+  }
+
+  if (!storeOwner) {
+    throw new Error('Store owner name is required');
+  }
+
+  if (!storeName) {
+    throw new Error('Store name is required');
+  }
+
   const dateTime = new Date(
     Number(dateStr.substring(0, 4)),
     Number(dateStr.substring(4, 6)) - 1,
