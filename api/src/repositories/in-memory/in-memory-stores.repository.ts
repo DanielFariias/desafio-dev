@@ -35,9 +35,13 @@ export class InMemoryStoresRepository implements StoresRepository {
     let filtered = this.stores;
 
     if (name?.text) {
-      const filterValue = name.text.toLowerCase().replace(/%/g, '');
+      const normalizedFilter =
+        typeof name?.values[0] === 'string'
+          ? name.values[0].toLowerCase().replace(/%/g, '')
+          : '';
+
       filtered = filtered.filter((store) =>
-        store.name.toLowerCase().includes(filterValue),
+        store.name.toLowerCase().includes(normalizedFilter),
       );
     }
 
