@@ -10,4 +10,13 @@ export async function app(fastify: FastifyInstance) {
   });
 
   fastify.register(transactionsRoutes);
+
+  fastify.setErrorHandler((error, _, reply) => {
+    fastify.log.error(error);
+
+    reply.status(500).send({
+      statusCode: 500,
+      message: 'Internal server error. Please try again later.',
+    });
+  });
 }

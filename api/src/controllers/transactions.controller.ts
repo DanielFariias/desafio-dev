@@ -6,6 +6,8 @@ import { parseCNABLine } from '../helpers/parseCNABLine';
 
 import { prisma } from '../libs/prisma';
 
+import { isPrismaDuplicateError } from '../utils/isPrismaDuplicateError';
+
 export async function uploadTransactionsController(
   request: FastifyRequest,
   reply: FastifyReply,
@@ -17,6 +19,7 @@ export async function uploadTransactionsController(
   }
 
   let totalTransactions = 0;
+  let duplicatedTransactions = 0;
 
   await pipeline(data.file, split2(), async (source) => {
     for await (const line of source) {
@@ -40,23 +43,32 @@ export async function uploadTransactionsController(
         });
       }
 
-      await prisma.transaction.create({
-        data: {
-          type: parsed.type,
-          transactionAt: parsed.transactionAt,
-          value: parsed.value,
-          cpf: parsed.cpf,
-          card: parsed.card,
-          storeId: store.id,
-        },
-      });
+      try {
+        await prisma.transaction.create({
+          data: {
+            type: parsed.type,
+            transactionAt: parsed.transactionAt,
+            value: parsed.value,
+            cpf: parsed.cpf,
+            card: parsed.card,
+            storeId: store.id,
+          },
+        });
 
-      totalTransactions++;
+        totalTransactions++;
+      } catch (error) {
+        if (isPrismaDuplicateError(error)) {
+          duplicatedTransactions++;
+        } else {
+          throw error;
+        }
+      }
     }
   });
 
   return reply.status(201).send({
     message: 'File processed successfully',
-    totalTransactions,
+    inserted: totalTransactions,
+    duplicates: duplicatedTransactions,
   });
 }
