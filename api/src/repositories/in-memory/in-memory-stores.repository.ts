@@ -6,6 +6,14 @@ import { StoresRepository } from '../stores.repository';
 export class InMemoryStoresRepository implements StoresRepository {
   private stores: Store[] = [];
 
+  async findByNameAndOwner(name: string, ownerName: string) {
+    return (
+      this.stores.find(
+        (store) => store.name === name && store.ownerName === ownerName,
+      ) ?? null
+    );
+  }
+
   async create(data: { name: string; ownerName: string }) {
     const store: Store = {
       id: randomUUID(),
