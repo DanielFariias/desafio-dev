@@ -4,6 +4,15 @@ import { StoresRepository } from '../stores.repository';
 import { Prisma } from '@prisma/client';
 
 export class PrismaStoresRepository implements StoresRepository {
+  async findByNameAndOwner(name: string, ownerName: string) {
+    return prisma.store.findFirst({
+      where: {
+        name,
+        ownerName,
+      },
+    });
+  }
+
   async create(data: { name: string; ownerName: string }) {
     return prisma.store.create({ data });
   }
