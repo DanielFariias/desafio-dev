@@ -2,9 +2,11 @@ import fastifyMultipart from '@fastify/multipart';
 import { FastifyInstance } from 'fastify';
 import { transactionsRoutes } from './routes/transactions.routes';
 import { storesRoutes } from './routes/stores.routes';
+import { setupSwagger } from './plugins/swagger';
 
 export async function app(fastify: FastifyInstance) {
   fastify.register(fastifyMultipart);
+  await setupSwagger(fastify);
 
   fastify.get('/', async () => {
     return { message: 'Hello World!' };
