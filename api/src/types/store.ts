@@ -15,8 +15,8 @@ export type StoreQueryParams = {
 };
 
 export type FindAllWithBalanceParams = {
-  name?: Prisma.Sql;
-  order?: string;
-  limit?: number;
-  offset?: number;
+  name: Prisma.Sql;
+  order: string;
+  limit: number;
+  offset: number;
 };
