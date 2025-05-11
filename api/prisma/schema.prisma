@@ -35,4 +35,6 @@ model Transaction {
   card          String          @db.Char(12)
   storeId       String
   store         Store           @relation(fields: [storeId], references: [id])
+
+  @@unique([storeId, transactionAt, card, cpf, type])
 }

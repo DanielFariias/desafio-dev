@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import app from './app';
+import { app } from './app';
 import { env } from './config/env';
 
 async function start() {
