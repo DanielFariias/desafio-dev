@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { api } from '../../services/api';
 import styles from './styles.module.scss';
 
 export function UploadCard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file && file.name.endsWith('.txt')) {
       setSelectedFile(file);
+      setMessage(null);
     } else {
       alert('Por favor selecione um arquivo .txt válido.');
     }
@@ -20,6 +24,7 @@ export function UploadCard() {
     const file = event.dataTransfer.files[0];
     if (file && file.name.endsWith('.txt')) {
       setSelectedFile(file);
+      setMessage(null);
     } else {
       alert('Por favor selecione um arquivo .txt válido.');
     }
@@ -36,6 +41,31 @@ export function UploadCard() {
 
   function handleRemoveFile() {
     setSelectedFile(null);
+    setMessage(null);
+  }
+
+  async function handleUpload() {
+    if (!selectedFile) return;
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      setIsUploading(true);
+      setMessage(null);
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      await api.post('/transactions/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setMessage('Arquivo enviado com sucesso!');
+      setSelectedFile(null);
+    } catch (error) {
+      console.error(error);
+      setMessage('Erro ao enviar o arquivo. Tente novamente.');
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   return (
@@ -54,9 +84,18 @@ export function UploadCard() {
           <p className={styles.fileName}>
             Arquivo selecionado: {selectedFile.name}
           </p>
-          <button className={styles.removeButton} onClick={handleRemoveFile}>
-            Remover Arquivo
-          </button>
+          <div className={styles.buttonGroup}>
+            <button
+              className={styles.uploadAction}
+              onClick={handleUpload}
+              disabled={isUploading}
+            >
+              {isUploading ? 'Enviando...' : 'Enviar Arquivo'}
+            </button>
+            <button className={styles.removeButton} onClick={handleRemoveFile}>
+              Remover
+            </button>
+          </div>
         </>
       ) : (
         <>
@@ -74,6 +113,8 @@ export function UploadCard() {
           </label>
         </>
       )}
+
+      {message && <p className={styles.message}>{message}</p>}
     </div>
   );
 }
