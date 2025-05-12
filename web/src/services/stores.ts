@@ -5,7 +5,7 @@ import { sleep } from '../utils/sleep';
 import { api } from './api';
 
 export async function fetchStores(): Promise<StoreResponse> {
-  sleep();
+  await sleep();
 
   const response = await api.get<StoreResponse>('/stores');
 

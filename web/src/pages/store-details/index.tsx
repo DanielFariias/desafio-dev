@@ -35,7 +35,7 @@ export function StoreDetailsPage() {
       if (!storeId) return;
       try {
         setIsLoading(true);
-        sleep();
+        await sleep();
 
         const response = await fetchStoreTransactions(storeId);
         setTransactions(response.data);
