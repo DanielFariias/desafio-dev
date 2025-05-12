@@ -1,0 +1,77 @@
+@use '../../styles/variables' as *;
+@use '../../styles/breakpoints' as *;
+
+.card {
+  background-color: $color-white;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 3;
+  margin: $spacing-unit * 4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid $color-primary;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-unit * 2;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    margin: $spacing-unit * 4  0;
+    padding: $spacing-unit;
+  }
+}
+
+.tableWrapper {
+  max-width: 100%;
+  overflow-x: auto;
+
+  @media (max-width: $breakpoint-sm) {
+    margin-top: $spacing-unit * 2;
+
+    margin: $spacing-unit;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  color: $color-primary;
+  margin-bottom: $spacing-unit * 2;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  th, td {
+    text-align: left;
+    padding: $spacing-unit;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  th {
+    background-color: $color-background;
+    font-weight: 600;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td {
+    font-size: 0.95rem;
+  }
+}
+
+.positive {
+  color: green;
+  font-weight: 600;
+}
+
+.negative {
+  color: red;
+  font-weight: 600;
+}
