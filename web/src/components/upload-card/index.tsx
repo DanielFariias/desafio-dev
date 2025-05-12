@@ -4,7 +4,11 @@ import styles from './styles.module.scss';
 import toast from 'react-hot-toast';
 import { Spinner } from '../spinner';
 
-export function UploadCard() {
+interface UploadCardProps {
+  onSuccess: () => void;
+}
+
+export function UploadCard({ onSuccess }: UploadCardProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -64,6 +68,7 @@ export function UploadCard() {
       });
       toast.success('Arquivo enviado com sucesso!', { id: uploadToast });
       setSelectedFile(null);
+      onSuccess();
     } catch (error) {
       toast.error('Erro ao enviar o arquivo.', { id: uploadToast });
       console.error(error);

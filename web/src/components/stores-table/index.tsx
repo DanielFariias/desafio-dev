@@ -1,36 +1,18 @@
-import { useEffect, useState } from 'react';
-import { fetchStores, type Store } from '../../services/stores';
+import { type Store } from '../../services/stores';
 import styles from './styles.module.scss';
 import { Spinner } from '../spinner';
-import { Eye } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { EmptyState } from '../empty-state';
 
-export function StoresTable() {
-  const [stores, setStores] = useState<Store[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+interface StoresTableProps {
+  stores: Store[];
+  isLoading: boolean;
+  error: string | null;
+}
 
+export function StoresTable({ stores, isLoading, error }: StoresTableProps) {
   const navigate = useNavigate();
-
-  console.log({ stores });
-
-  useEffect(() => {
-    async function loadStores() {
-      try {
-        setIsLoading(true);
-        const response = await fetchStores();
-        setStores(response.data);
-      } catch (err) {
-        console.error(err);
-        setError('Erro ao carregar as lojas.');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadStores();
-  }, []);
 
   return (
     <div className={styles.card}>
@@ -71,10 +53,14 @@ export function StoresTable() {
                   <td>
                     <button
                       className={styles.viewButton}
-                      onClick={() => navigate(`/stores/${store.id}`)}
+                      onClick={() =>
+                        navigate(`/stores/${store.id}`, {
+                          state: { storeName: store.name },
+                        })
+                      }
                       title="Ver detalhes"
                     >
-                      <Eye size={20} />
+                      <ExternalLink size={20} />
                     </button>
                   </td>
                 </tr>
