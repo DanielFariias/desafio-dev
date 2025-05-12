@@ -1,33 +1,15 @@
 # 📝 Desafio ByCoders - CNAB Parser Fullstack
 
-Este repositório contém a solução completa para o **desafio técnico ByCoders**, com desenvolvimento **fullstack** utilizando **Node.js + Fastify + Prisma** no backend e **React + Vite + TypeScript** no frontend.
+Este repositório contém a solução completa para o **desafio técnico ByCoders**, com desenvolvimento **fullstack** utilizando **Node.js + Fastify + Prisma** no backend (`api`) e **React + Vite + TypeScript** no frontend (`web`).
+
+---
 
 ## 📦 Estrutura do Repositório
 
-| Pasta | Descrição                |
-| ----- | ------------------------ |
-| `api` | Contém o serviço backend |
-| `web` | Contém o sistema web     |
-
-
----
-
-## 🚀 Funcionalidade principal
-
-O sistema permite:
-- Upload e leitura de arquivos **CNAB (fixed-length)**  
-- Armazenamento seguro das transações em banco de dados  
-- Validação de dados e tratamento de registros inválidos  
-- Listagem e filtragem das transações por loja  
-- Interface intuitiva e responsiva para operação do sistema  
-
----
-
-## 🖥️ Requisitos
-
-- Node.js `18+`
-- Docker e Docker Compose
-- Yarn ou npm
+| Pasta  | Descrição |
+|--------|-----------|
+| `api`  | Contém o serviço backend |
+| `web`  | Contém o sistema web |
 
 ---
 
@@ -37,6 +19,14 @@ Cada projeto possui instruções e detalhes técnicos no seu próprio `README.md
 
 - 👉 [Instruções do Backend](./api/README.md)
 - 👉 [Instruções do Frontend](./web/README.md)
+
+---
+
+## 📋 Enunciado original do desafio
+
+O enunciado completo do desafio técnico proposto pela ByCoders_ está disponível no arquivo:
+
+- 👉 [README-desafio.md (Enunciado do Desafio)](./README-desafio.md)
 
 ---
 
