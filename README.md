@@ -26,7 +26,7 @@ Cada projeto possui instruções e detalhes técnicos no seu próprio `README.md
 
 O enunciado completo do desafio técnico proposto pela ByCoders_ está disponível no arquivo:
 
-- 👉 [README-desafio.md (Enunciado do Desafio)](./README-desafio.md)
+- 👉 [Enunciado do Desafio](./README-Desafio.md)
 
 ---
 
