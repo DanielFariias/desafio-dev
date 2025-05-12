@@ -3,8 +3,13 @@ import { FastifyInstance } from 'fastify';
 import { transactionsRoutes } from './routes/transactions.routes';
 import { storesRoutes } from './routes/stores.routes';
 import { setupSwagger } from './plugins/swagger';
+import fastifyCors from '@fastify/cors';
 
 export async function app(fastify: FastifyInstance) {
+  await fastify.register(fastifyCors, {
+    origin: '*',
+  });
+
   fastify.register(fastifyMultipart);
   await setupSwagger(fastify);
 
