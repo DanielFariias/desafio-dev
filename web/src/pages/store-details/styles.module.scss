@@ -73,3 +73,19 @@
     stroke: $color-primary;
   }
 }
+
+.positive {
+  color: green;
+  font-weight: 600;
+}
+
+.negative {
+  color: red;
+  font-weight: 600;
+}
+
+.subtotal {
+  font-weight: 600;
+  margin-top: $spacing-unit * 2;
+  color: $color-primary;
+}

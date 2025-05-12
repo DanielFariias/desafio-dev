@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   fetchStoreTransactions,
+  type CNABType,
   type Transaction,
 } from '../../services/stores';
 import toast from 'react-hot-toast';
@@ -10,12 +11,19 @@ import { Spinner } from '../../components/spinner';
 import { EmptyState } from '../../components/empty-state';
 import { ArrowLeft } from 'lucide-react';
 
+export function isNegativeTransaction(type: CNABType) {
+  const negativeTypes: CNABType[] = ['BANK_SLIP', 'FINANCING', 'RENT'];
+  return negativeTypes.includes(type);
+}
+
 export function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const storeName = (location.state as { storeName?: string })?.storeName;
 
   useEffect(() => {
     async function loadTransactions() {
@@ -36,6 +44,13 @@ export function StoreDetailsPage() {
     loadTransactions();
   }, [storeId]);
 
+  const subtotal = transactions.reduce((acc, tx) => {
+    const value = Math.abs(tx.value);
+    return isNegativeTransaction(tx.type as CNABType)
+      ? acc - value
+      : acc + value;
+  }, 0);
+
   return (
     <div className={styles.card}>
       <button className={styles.backButton} onClick={() => navigate(-1)}>
@@ -43,7 +58,7 @@ export function StoreDetailsPage() {
         Voltar
       </button>
       <div className={styles.container}>
-        <h2>Transações da Loja</h2>
+        <h2> Transações da Loja {storeName ? `- ${storeName}` : ''}</h2>
 
         {isLoading ? (
           <Spinner />
@@ -56,10 +71,9 @@ export function StoreDetailsPage() {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Data</th>
+                <th>Tipo</th>
                 <th>CPF</th>
                 <th>Cartão</th>
-                <th>Tipo</th>
                 <th>Valor</th>
                 <th>Data da transação</th>
               </tr>
@@ -68,16 +82,28 @@ export function StoreDetailsPage() {
               {transactions.length > 0 &&
                 transactions?.map((tx) => (
                   <tr key={tx.id}>
-                    <td>{new Date(tx.date).toLocaleDateString()}</td>
+                    <td>{tx.type}</td>
                     <td>{tx.cpf}</td>
                     <td>{tx.card}</td>
-                    <td>{tx.type}</td>
-                    <td>R$ {tx.value.toFixed(2)}</td>
+                    <td
+                      className={
+                        isNegativeTransaction(tx.type as CNABType)
+                          ? styles.negative
+                          : styles.positive
+                      }
+                    >
+                      R$ {isNegativeTransaction(tx.type as CNABType) ? '-' : ''}
+                      {Math.abs(tx.value).toFixed(2)}
+                    </td>
                     <td>{new Date(tx.transactionAt).toLocaleString()}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
+        )}
+
+        {!isLoading && (
+          <p className={styles.subtotal}>Subtotal: R$ {subtotal.toFixed(2)}</p>
         )}
       </div>
     </div>
