@@ -2,12 +2,15 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { pipeline } from 'stream/promises';
 import split2 from 'split2';
 
-import { parseCNABLine } from '../helpers/parseCNABLine';
-import { StoresRepository } from '../repositories/stores.repository';
 import { TransactionsRepository } from '../repositories/transactions.repository';
-import { isPrismaDuplicateError } from '../utils/isPrismaDuplicateError';
-import { StoreQueryParams } from '../types/store';
+import { StoresRepository } from '../repositories/stores.repository';
+
 import { getPaginationParams } from '../helpers/getPaginationParams';
+import { parseCNABLine } from '../helpers/parseCNABLine';
+
+import { isPrismaDuplicateError } from '../utils/isPrismaDuplicateError';
+
+import { StoreQueryParams } from '../types/store';
 
 export function uploadTransactionsController(
   storesRepository: StoresRepository,

@@ -1,6 +1,8 @@
-import { TransactionsRepository } from '../transactions.repository';
 import { Transaction } from '@prisma/client';
 import { randomUUID } from 'crypto';
+
+import { TransactionsRepository } from '../transactions.repository';
+
 import {
   CreateTransactionParams,
   FindTransactionByUniqueKeyParams,

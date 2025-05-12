@@ -1,7 +1,9 @@
 import { Store } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { FindAllWithBalanceParams } from '../../types/store';
+
 import { StoresRepository } from '../stores.repository';
+
+import { FindAllWithBalanceParams } from '../../types/store';
 
 export class InMemoryStoresRepository implements StoresRepository {
   private stores: Store[] = [];

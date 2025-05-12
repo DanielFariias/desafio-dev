@@ -1,12 +1,14 @@
-import { describe, it, beforeEach, expect } from 'vitest';
 import { fastify, FastifyInstance } from 'fastify';
+import { describe, it, beforeEach, expect } from 'vitest';
 import multipart from '@fastify/multipart';
 import { Readable } from 'stream';
 import FormData from 'form-data';
 
-import { InMemoryTransactionsRepository } from '../../src/repositories/in-memory/in-memory-transactions.repository';
-import { InMemoryStoresRepository } from '../../src/repositories/in-memory/in-memory-stores.repository';
-import { uploadTransactionsController } from '../../src/controllers/transactions.controller';
+import { uploadTransactionsController } from './transactions.controller';
+
+import { InMemoryTransactionsRepository } from '../repositories/in-memory/in-memory-transactions.repository';
+import { InMemoryStoresRepository } from '../repositories/in-memory/in-memory-stores.repository';
+
 import { setupFastifyTransactions } from '../tests/helpers/setup-fastify-transactions';
 
 const sampleCNABLine =

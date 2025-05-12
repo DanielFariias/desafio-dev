@@ -1,12 +1,11 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+
 import { UsersRepository } from '../repositories/users.repository';
+import { RegisterBodyRequestParams } from '../types/register';
 
 export function registerController(usersRepository: UsersRepository) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = request.body as {
-      email: string;
-      password: string;
-    };
+    const { email, password } = request.body as RegisterBodyRequestParams;
 
     const userExists = await usersRepository.findByEmail(email);
 

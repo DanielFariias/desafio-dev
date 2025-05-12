@@ -1,4 +1,5 @@
 import { Store } from '@prisma/client';
+
 import { FindAllWithBalanceParams, StoreWithBalance } from '../types/store';
 
 export interface StoresRepository {

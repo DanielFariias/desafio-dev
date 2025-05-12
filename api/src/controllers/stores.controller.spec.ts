@@ -2,6 +2,7 @@ import { describe, it, beforeEach, expect } from 'vitest';
 import { FastifyInstance } from 'fastify';
 
 import { InMemoryStoresRepository } from '../../src/repositories/in-memory/in-memory-stores.repository';
+
 import { setupFastifyStores } from '../tests/helpers/setup-fastify-stores';
 
 describe('Stores Controller', () => {

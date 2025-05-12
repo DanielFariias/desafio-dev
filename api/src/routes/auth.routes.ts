@@ -1,7 +1,9 @@
 import { FastifyInstance } from 'fastify';
-import { loginController } from '../controllers/auth.controller';
+
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users.repository';
+
 import { registerController } from '../controllers/register.controller';
+import { loginController } from '../controllers/login.controller';
 
 export async function authRoutes(fastify: FastifyInstance) {
   const usersRepository = new PrismaUsersRepository();

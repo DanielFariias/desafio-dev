@@ -1,7 +1,10 @@
-import { hashPassword } from '../../helpers/password';
-import { prisma } from '../../libs/prisma';
-import { UsersRepository } from '../users.repository';
 import { User } from '@prisma/client';
+
+import { prisma } from '../../libs/prisma';
+
+import { UsersRepository } from '../users.repository';
+
+import { hashPassword } from '../../helpers/password';
 
 export class PrismaUsersRepository implements UsersRepository {
   async create(data: { email: string; password: string }) {

@@ -1,7 +1,10 @@
-import { prisma } from '../../libs/prisma';
-import { FindAllWithBalanceParams, StoreWithBalance } from '../../types/store';
-import { StoresRepository } from '../stores.repository';
 import { Prisma } from '@prisma/client';
+
+import { prisma } from '../../libs/prisma';
+
+import { StoresRepository } from '../stores.repository';
+
+import { FindAllWithBalanceParams, StoreWithBalance } from '../../types/store';
 
 export class PrismaStoresRepository implements StoresRepository {
   async findByNameAndOwner(name: string, ownerName: string) {

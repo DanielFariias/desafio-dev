@@ -1,19 +1,16 @@
+import { FastifyInstance } from 'fastify';
 import { describe, it, beforeEach, expect } from 'vitest';
-import { fastify, FastifyInstance } from 'fastify';
-import { registerController } from './register.controller';
+
 import { InMemoryUsersRepository } from '../repositories/in-memory/in-memory-users.repository';
+
+import { setupFastifyRegister } from '../tests/helpers/setup-fastify-register';
 
 describe('Register Controller', () => {
   let app: FastifyInstance;
   let usersRepository: InMemoryUsersRepository;
 
   beforeEach(async () => {
-    app = fastify();
-    usersRepository = new InMemoryUsersRepository();
-
-    app.post('/auth/register', registerController(usersRepository));
-
-    await app.ready();
+    ({ app, usersRepository } = await setupFastifyRegister());
   });
 
   it('should register a new user', async () => {

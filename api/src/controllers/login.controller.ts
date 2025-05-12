@@ -1,13 +1,14 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+
 import { UsersRepository } from '../repositories/users.repository';
+
 import { comparePassword } from '../helpers/password';
+
+import { LoginBodyRequestParams } from '../types/login';
 
 export function loginController(usersRepository: UsersRepository) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = request.body as {
-      email: string;
-      password: string;
-    };
+    const { email, password } = request.body as LoginBodyRequestParams;
 
     const user = await usersRepository.findByEmail(email);
 

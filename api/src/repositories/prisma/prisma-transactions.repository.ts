@@ -1,9 +1,11 @@
 import { prisma } from '../../libs/prisma';
+
+import { TransactionsRepository } from '../transactions.repository';
+
 import {
   CreateTransactionParams,
   FindTransactionByUniqueKeyParams,
 } from '../../types/transaction';
-import { TransactionsRepository } from '../transactions.repository';
 
 export class PrismaTransactionsRepository implements TransactionsRepository {
   async findByUniqueKey({

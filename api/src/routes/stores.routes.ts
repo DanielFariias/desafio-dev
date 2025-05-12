@@ -1,5 +1,7 @@
 import { FastifyInstance } from 'fastify';
+
 import { PrismaStoresRepository } from '../repositories/prisma/prisma-stores.repository';
+
 import { listStoresController } from '../controllers/stores.controller';
 
 export async function storesRoutes(fastify: FastifyInstance) {

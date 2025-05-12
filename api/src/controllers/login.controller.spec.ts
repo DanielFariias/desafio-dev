@@ -1,23 +1,19 @@
-import { describe, it, beforeEach, expect } from 'vitest';
 import { fastify, FastifyInstance } from 'fastify';
+import { describe, it, beforeEach, expect } from 'vitest';
 import fastifyJwt from '@fastify/jwt';
-import { InMemoryUsersRepository } from '../../src/repositories/in-memory/in-memory-users.repository';
-import { loginController } from '../../src/controllers/auth.controller';
+
+import { InMemoryUsersRepository } from '../repositories/in-memory/in-memory-users.repository';
+
+import { setupFastifyLogin } from '../tests/helpers/setup-fastify-login';
+
 import { authMiddleware } from '../plugins/auth';
 
-describe('Auth Controller', () => {
+describe('Login Controller', () => {
   let app: FastifyInstance;
   let usersRepository: InMemoryUsersRepository;
 
   beforeEach(async () => {
-    app = fastify();
-    app.register(fastifyJwt, { secret: 'testsecret' });
-
-    usersRepository = new InMemoryUsersRepository();
-
-    app.post('/auth/login', loginController(usersRepository));
-
-    await app.ready();
+    ({ app, usersRepository } = await setupFastifyLogin());
   });
 
   it('should login with valid credentials', async () => {
