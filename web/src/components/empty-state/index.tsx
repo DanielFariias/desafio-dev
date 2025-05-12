@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { Inbox } from 'lucide-react';
+
 import styles from './styles.module.scss';
-import type React from 'react';
 
 interface EmptyStateProps {
   title: string;

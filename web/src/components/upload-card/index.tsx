@@ -1,18 +1,23 @@
-import { useState } from 'react';
-import { api } from '../../services/api';
-import styles from './styles.module.scss';
+import React from 'react';
+
 import toast from 'react-hot-toast';
+
 import { Spinner } from '../spinner';
+
+import { api } from '../../services/api';
+import { sleep } from '../../utils/sleep';
+
+import styles from './styles.module.scss';
 
 interface UploadCardProps {
   onSuccess: () => void;
 }
 
 export function UploadCard({ onSuccess }: UploadCardProps) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [isUploading, setIsUploading] = React.useState(false);
+  const [message, setMessage] = React.useState<string | null>(null);
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -61,11 +66,12 @@ export function UploadCard({ onSuccess }: UploadCardProps) {
       setIsUploading(true);
       setMessage(null);
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await sleep();
 
       await api.post('/transactions/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+
       toast.success('Arquivo enviado com sucesso!', { id: uploadToast });
       setSelectedFile(null);
       onSuccess();
@@ -90,12 +96,12 @@ export function UploadCard({ onSuccess }: UploadCardProps) {
         <p className={styles.dropMessage}>Solte aqui o arquivo .txt</p>
       ) : selectedFile ? (
         <>
-          <p className={styles.fileName}>
-            Arquivo selecionado: {selectedFile.name}
-          </p>
+          <p>Arquivo selecionado: {selectedFile.name}</p>
           <div className={styles.buttonGroup}>
             {isUploading ? (
-              <Spinner />
+              <div className={styles.loading}>
+                <Spinner />
+              </div>
             ) : (
               <>
                 <button className={styles.uploadAction} onClick={handleUpload}>

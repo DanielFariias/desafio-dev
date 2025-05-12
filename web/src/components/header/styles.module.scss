@@ -3,7 +3,7 @@
 .header {
   background-color: $color-primary;
   color: $color-white;
-  padding: $spacing-unit $spacing-unit * 2;
+  padding: $spacing-unit * 0.5 $spacing-unit * 2;
 }
 
 .container {
@@ -11,6 +11,10 @@
   justify-content: space-between;
   align-items: center;
   margin: 0 $spacing-unit * 2 ;
+
+  h1 {
+    font-size: 1.5rem;
+  }
 
   a {
     color: #fff;

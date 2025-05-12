@@ -1,8 +1,9 @@
-import type React from 'react';
+import React from 'react';
 
 import { Header } from '../header';
-import styles from './styles.module.scss';
 import { Footer } from '../footer';
+
+import styles from './styles.module.scss';
 
 interface AppLayoutProps {
   children: React.ReactNode;

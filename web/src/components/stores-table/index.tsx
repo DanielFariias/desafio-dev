@@ -1,9 +1,12 @@
-import { type Store } from '../../services/stores';
-import styles from './styles.module.scss';
-import { Spinner } from '../spinner';
-import { ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ExternalLink } from 'lucide-react';
+
 import { EmptyState } from '../empty-state';
+import { Spinner } from '../spinner';
+
+import type { Store } from '../../types/store';
+
+import styles from './styles.module.scss';
 
 interface StoresTableProps {
   stores: Store[];
@@ -19,7 +22,9 @@ export function StoresTable({ stores, isLoading, error }: StoresTableProps) {
       <h2 className={styles.title}>Lojas Cadastradas</h2>
 
       {isLoading ? (
-        <Spinner />
+        <div className={styles.loading}>
+          <Spinner />
+        </div>
       ) : error ? (
         <p>{error}</p>
       ) : stores?.length === 0 ? (

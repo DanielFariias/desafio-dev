@@ -1,5 +1,11 @@
 import styles from './styles.module.scss';
 
-export function Spinner() {
-  return <div className={styles.loader}></div>;
+interface SpinnerProps {
+  size?: number;
+}
+
+export function Spinner({ size = 40 }: SpinnerProps) {
+  return (
+    <div className={styles.loader} style={{ width: size, height: size }} />
+  );
 }

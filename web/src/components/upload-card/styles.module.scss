@@ -22,38 +22,15 @@
   }
 }
 
+.isDragging {
+  border-color: blue;
+  background-color: #eef6ff;
+}
+
 .title {
   font-size: 1.5rem;
   margin-bottom: $spacing-unit * 2;
   color: $color-primary;
-}
-
-.instructions {
-  font-size: 1rem;
-  margin-bottom: $spacing-unit * 2;
-  color: $color-text;
-}
-
-.uploadButton {
-  display: inline-block;
-  padding: $spacing-unit * 0.75 $spacing-unit;
-  background-color: $color-primary;
-  color: $color-white;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
-.isDragging {
-  border-color: blue;
-  background-color: #eef6ff;
 }
 
 .dropMessage {
@@ -62,26 +39,13 @@
   font-weight: 600;
 }
 
-.removeButton {
-  margin-top: $spacing-unit * 2;
-  padding: $spacing-unit * 0.75 $spacing-unit;
-  background-color: $color-primary;
-  color: $color-white;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
 .buttonGroup {
   display: flex;
   gap: $spacing-unit;
+}
+
+.loading {
+  padding: $spacing-unit * 2;
 }
 
 .uploadAction {
@@ -103,6 +67,46 @@
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+}
+
+.removeButton {
+  margin-top: $spacing-unit * 2;
+  padding: $spacing-unit * 0.75 $spacing-unit;
+  background-color: $color-primary;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.instructions {
+  font-size: 1rem;
+  margin-bottom: $spacing-unit * 2;
+  color: $color-text;
+}
+
+.uploadButton {
+  display: inline-block;
+  padding: $spacing-unit * 0.5 $spacing-unit;
+  background-color: $color-primary;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+
+  &:hover {
+    opacity: 0.9;
   }
 }
 

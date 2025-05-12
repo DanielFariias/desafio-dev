@@ -21,21 +21,16 @@
   }
 }
 
-.tableWrapper {
-  max-width: 100%;
-  overflow-x: auto;
-
-  @media (max-width: $breakpoint-sm) {
-    margin-top: $spacing-unit * 2;
-
-    margin: $spacing-unit;
-  }
-}
-
 .title {
   font-size: 1.5rem;
   color: $color-primary;
   margin-bottom: $spacing-unit * 2;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .table {
