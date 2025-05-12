@@ -144,6 +144,145 @@ Acesse a documentação Swagger da API em:
 
 ---
 
+## 📋 Endpoints da API
+
+### 🔐 Auth
+
+#### POST /auth/register
+Registra um novo usuário.
+
+**Body (JSON):**
+```json
+{
+  "email": "user@example.com",
+  "password": "12345678"
+}
+```
+
+**Respostas:**
+- 201 Created: Usuário criado com sucesso.
+- 409 Conflict: Usuário já existente.
+
+---
+
+#### POST /auth/login
+Realiza o login e retorna o token JWT.
+
+**Body (JSON):**
+```json
+{
+  "email": "user@example.com",
+  "password": "12345678"
+}
+```
+
+**Respostas:**
+- 200 OK: Retorna `{ "access_token": "seu-jwt-token" }`
+- 401 Unauthorized: Credenciais inválidas.
+
+---
+
+### 🏬 Stores (Privado - Requer Bearer Token)
+
+#### GET /stores
+Lista lojas com saldo total.
+
+**Query params (opcional):**
+- page: número da página (default: 1)
+- limit: itens por página (default: 10)
+- name: filtro pelo nome da loja
+- order: asc ou desc para ordenação por nome
+
+**Respostas:**
+```json
+{
+  "page": 1,
+  "limit": 10,
+  "totalCount": 2,
+  "hasNextPage": false,
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Loja Teste",
+      "ownerName": "Carlos",
+      "balance": 1000
+    }
+  ]
+}
+```
+
+---
+
+#### GET /stores/:storeId/transactions
+Lista as transações de uma loja específica.
+
+**Path param:**
+- storeId: ID da loja
+
+**Query params (opcional):**
+- page: número da página (default: 1)
+- limit: itens por página (default: 10)
+- order: asc ou desc para ordenação por data da transação
+
+**Respostas:**
+```json
+{
+  "page": 1,
+  "limit": 10,
+  "totalCount": 3,
+  "hasNextPage": false,
+  "data": [
+    {
+      "id": "uuid",
+      "type": "DEBIT",
+      "transactionAt": "2024-05-10T12:00:00.000Z",
+      "value": 500,
+      "cpf": "12345678900",
+      "card": "1234****5678"
+    }
+  ]
+}
+```
+
+---
+
+### 💳 Transactions (Privado - Requer Bearer Token)
+
+#### POST /transactions/upload
+Faz upload e processamento do arquivo CNAB .txt.
+
+**Header:**
+- Content-Type: multipart/form-data
+
+**Body:**
+- campo `file`: arquivo .txt
+
+**Respostas:**
+```json
+{
+  "message": "File processed successfully",
+  "inserted": 10,
+  "duplicates": 2,
+  "invalid": 1
+}
+```
+
+**Erros:**
+- 400 Bad Request: Sem arquivo enviado
+
+---
+
+# 📝 Observações
+Todas as rotas (exceto /auth/*) requerem autenticação via Bearer Token JWT.
+
+Use `/auth/login` para obter o token e adicione no header:
+
+```makefile
+Authorization: Bearer <seu-token>
+```
+
+---
+
 ## 🎯 Testes
 
 Para rodar os testes:
