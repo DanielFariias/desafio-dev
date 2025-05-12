@@ -1,34 +1,26 @@
 import { type FormEvent, useState } from 'react';
 import { api } from '../../services/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import styles from './styles.module.scss';
 import { Spinner } from '../../components/spinner';
-import { useAuth } from '../../contexts/AuthContext';
-import { Link } from 'react-router-dom';
 
-export function LoginPage() {
+export function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const { login } = useAuth();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     try {
       setIsLoading(true);
-      const response = await api.post('/auth/login', { email, password });
-      const token = response.data.access_token;
-
-      login(token);
-
-      toast.success('Login realizado!');
-      navigate('/');
+      await api.post('/auth/register', { email, password });
+      toast.success('Cadastro realizado! Faça login.');
+      navigate('/login');
     } catch {
-      toast.error('Usuário ou senha inválidos');
+      toast.error('Erro ao cadastrar. Tente novamente.');
     } finally {
       setIsLoading(false);
     }
@@ -37,7 +29,7 @@ export function LoginPage() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h2>Login</h2>
+        <h2>Criar Conta</h2>
         <input
           type="email"
           placeholder="E-mail"
@@ -53,10 +45,10 @@ export function LoginPage() {
           required
         />
         <button type="submit" disabled={isLoading}>
-          {isLoading ? <Spinner /> : 'Entrar'}
+          {isLoading ? <Spinner /> : 'Cadastrar'}
         </button>
         <p>
-          Não tem conta? <Link to="/register">Cadastre-se</Link>
+          Já tem uma conta? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>
