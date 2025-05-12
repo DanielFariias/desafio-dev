@@ -5,8 +5,11 @@ import {
   listTransactionsByStoreController,
   uploadTransactionsController,
 } from '../controllers/transactions.controller';
+import fastifyMultipart from '@fastify/multipart';
 
 export async function transactionsRoutes(fastify: FastifyInstance) {
+  await fastify.register(fastifyMultipart);
+
   const storesRepository = new PrismaStoresRepository();
   const transactionsRepository = new PrismaTransactionsRepository();
 

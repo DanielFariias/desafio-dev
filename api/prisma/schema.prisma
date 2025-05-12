@@ -38,3 +38,9 @@ model Transaction {
 
   @@unique([storeId, transactionAt, card, cpf, type, value])
 }
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+}
