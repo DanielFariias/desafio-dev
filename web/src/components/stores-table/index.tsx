@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchStores, type Store } from '../../services/stores';
 import styles from './styles.module.scss';
+import { Spinner } from '../spinner';
 
 export function StoresTable() {
   const [stores, setStores] = useState<Store[]>([]);
@@ -31,7 +32,7 @@ export function StoresTable() {
       <h2 className={styles.title}>Lojas Cadastradas</h2>
 
       {isLoading ? (
-        <p>Carregando lojas...</p>
+        <Spinner />
       ) : error ? (
         <p>{error}</p>
       ) : stores?.length === 0 ? (

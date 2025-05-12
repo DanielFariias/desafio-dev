@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { api } from '../../services/api';
 import styles from './styles.module.scss';
+import toast from 'react-hot-toast';
+import { Spinner } from '../spinner';
 
 export function UploadCard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -14,7 +16,7 @@ export function UploadCard() {
       setSelectedFile(file);
       setMessage(null);
     } else {
-      alert('Por favor selecione um arquivo .txt válido.');
+      toast.error('Por favor selecione um arquivo .txt válido.');
     }
   }
 
@@ -26,7 +28,7 @@ export function UploadCard() {
       setSelectedFile(file);
       setMessage(null);
     } else {
-      alert('Por favor selecione um arquivo .txt válido.');
+      toast.error('Por favor selecione um arquivo .txt válido.');
     }
   }
 
@@ -49,6 +51,8 @@ export function UploadCard() {
     const formData = new FormData();
     formData.append('file', selectedFile);
 
+    const uploadToast = toast.loading('Enviando arquivo...');
+
     try {
       setIsUploading(true);
       setMessage(null);
@@ -58,11 +62,11 @@ export function UploadCard() {
       await api.post('/transactions/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setMessage('Arquivo enviado com sucesso!');
+      toast.success('Arquivo enviado com sucesso!', { id: uploadToast });
       setSelectedFile(null);
     } catch (error) {
+      toast.error('Erro ao enviar o arquivo.', { id: uploadToast });
       console.error(error);
-      setMessage('Erro ao enviar o arquivo. Tente novamente.');
     } finally {
       setIsUploading(false);
     }
@@ -85,16 +89,21 @@ export function UploadCard() {
             Arquivo selecionado: {selectedFile.name}
           </p>
           <div className={styles.buttonGroup}>
-            <button
-              className={styles.uploadAction}
-              onClick={handleUpload}
-              disabled={isUploading}
-            >
-              {isUploading ? 'Enviando...' : 'Enviar Arquivo'}
-            </button>
-            <button className={styles.removeButton} onClick={handleRemoveFile}>
-              Remover
-            </button>
+            {isUploading ? (
+              <Spinner />
+            ) : (
+              <>
+                <button className={styles.uploadAction} onClick={handleUpload}>
+                  Enviar Arquivo
+                </button>
+                <button
+                  className={styles.removeButton}
+                  onClick={handleRemoveFile}
+                >
+                  Remover
+                </button>
+              </>
+            )}
           </div>
         </>
       ) : (
