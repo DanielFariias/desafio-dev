@@ -21,3 +21,16 @@
     }
   }
 }
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: $color-white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

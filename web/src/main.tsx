@@ -4,12 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { App } from './app';
 import './styles/global.css';
+import { AuthProvider } from './contexts/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
-      <Toaster position="top-right" />
+      <AuthProvider>
+        <App />
+        <Toaster position="top-right" />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
