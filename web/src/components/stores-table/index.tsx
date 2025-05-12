@@ -4,6 +4,7 @@ import styles from './styles.module.scss';
 import { Spinner } from '../spinner';
 import { Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { EmptyState } from '../empty-state';
 
 export function StoresTable() {
   const [stores, setStores] = useState<Store[]>([]);
@@ -40,7 +41,10 @@ export function StoresTable() {
       ) : error ? (
         <p>{error}</p>
       ) : stores?.length === 0 ? (
-        <p>Nenhuma loja encontrada.</p>
+        <EmptyState
+          title="Nenhuma loja encontrada"
+          description="Ainda não existem lojas cadastradas."
+        />
       ) : (
         <table className={styles.table}>
           <thead>

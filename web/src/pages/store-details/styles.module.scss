@@ -1,0 +1,75 @@
+@use '../../styles/variables' as *;
+@use '../../styles/breakpoints' as *;
+
+.card {
+  background-color: $color-white;
+  border-radius: $border-radius;
+  padding: $spacing-unit * 3;
+  margin: $spacing-unit * 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid $color-primary;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-unit * 2;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    margin: $spacing-unit * 4  0;
+    padding: $spacing-unit;
+  }
+}
+
+.container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+  border-radius: $border-radius;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  th, td {
+    text-align: left;
+    padding: $spacing-unit;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  th {
+    background-color: $color-background;
+    font-weight: 600;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  td {
+    font-size: 0.95rem;
+  }
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-unit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-primary;
+  font-weight: 500;
+  margin-bottom: $spacing-unit * 2;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  svg {
+    stroke: $color-primary;
+  }
+}
