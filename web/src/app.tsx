@@ -1,10 +1,10 @@
 import { AppLayout } from './components/app-layout';
-import { Dashboard } from './pages/dashboard';
+import { Router } from './pages/router';
 
 export function App() {
   return (
     <AppLayout>
-      <Dashboard />
+      <Router />
     </AppLayout>
   );
 }

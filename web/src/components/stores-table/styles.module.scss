@@ -75,3 +75,17 @@
   color: red;
   font-weight: 600;
 }
+
+.viewButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

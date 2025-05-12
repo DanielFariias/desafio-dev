@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import { fetchStores, type Store } from '../../services/stores';
 import styles from './styles.module.scss';
 import { Spinner } from '../spinner';
+import { Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function StoresTable() {
   const [stores, setStores] = useState<Store[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   console.log({ stores });
 
@@ -44,6 +48,7 @@ export function StoresTable() {
               <th>Nome da Loja</th>
               <th>Dono da Loja</th>
               <th>Saldo Final</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +63,15 @@ export function StoresTable() {
                     }
                   >
                     R$ {store.balance.toFixed(2)}
+                  </td>
+                  <td>
+                    <button
+                      className={styles.viewButton}
+                      onClick={() => navigate(`/stores/${store.id}`)}
+                      title="Ver detalhes"
+                    >
+                      <Eye size={20} />
+                    </button>
                   </td>
                 </tr>
               ))}
