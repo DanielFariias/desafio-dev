@@ -1,21 +1,42 @@
+import { useEffect, useState } from 'react';
+import { fetchStores, type Store } from '../../services/stores';
 import styles from './styles.module.scss';
 
-const mockStores = [
-  { id: '1', name: 'Bar do João', owner: 'João Macedo', balance: 1500.75 },
-  {
-    id: '2',
-    name: 'Mercado Avenida',
-    owner: 'Maria Oliveira',
-    balance: -250.5,
-  },
-  { id: '3', name: 'Loja Exemplo', owner: 'Carlos Souza', balance: 3000 },
-];
-
 export function StoresTable() {
+  const [stores, setStores] = useState<Store[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  console.log({ stores });
+
+  useEffect(() => {
+    async function loadStores() {
+      try {
+        setIsLoading(true);
+        const response = await fetchStores();
+        setStores(response.data);
+      } catch (err) {
+        console.error(err);
+        setError('Erro ao carregar as lojas.');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadStores();
+  }, []);
+
   return (
     <div className={styles.card}>
-      <div className={styles.tableWrapper}>
-        <h2 className={styles.title}>Lojas Cadastradas</h2>
+      <h2 className={styles.title}>Lojas Cadastradas</h2>
+
+      {isLoading ? (
+        <p>Carregando lojas...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : stores?.length === 0 ? (
+        <p>Nenhuma loja encontrada.</p>
+      ) : (
         <table className={styles.table}>
           <thead>
             <tr>
@@ -25,22 +46,23 @@ export function StoresTable() {
             </tr>
           </thead>
           <tbody>
-            {mockStores.map((store) => (
-              <tr key={store.id}>
-                <td>{store.name}</td>
-                <td>{store.owner}</td>
-                <td
-                  className={
-                    store.balance >= 0 ? styles.positive : styles.negative
-                  }
-                >
-                  R$ {store.balance.toFixed(2)}
-                </td>
-              </tr>
-            ))}
+            {stores?.length > 0 &&
+              stores?.map((store) => (
+                <tr key={store.id}>
+                  <td>{store.name}</td>
+                  <td>{store.ownerName}</td>
+                  <td
+                    className={
+                      store.balance >= 0 ? styles.positive : styles.negative
+                    }
+                  >
+                    R$ {store.balance.toFixed(2)}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
-      </div>
+      )}
     </div>
   );
 }
