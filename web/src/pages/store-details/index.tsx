@@ -1,15 +1,20 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import {
-  fetchStoreTransactions,
-  type CNABType,
-  type Transaction,
-} from '../../services/stores';
-import toast from 'react-hot-toast';
-import styles from './styles.module.scss';
-import { Spinner } from '../../components/spinner';
-import { EmptyState } from '../../components/empty-state';
 import { ArrowLeft } from 'lucide-react';
+import toast from 'react-hot-toast';
+
+import { EmptyState } from '../../components/empty-state';
+import { Spinner } from '../../components/spinner';
+
+import { fetchStoreTransactions } from '../../services/transactions';
+
+import type { Transaction } from '../../types/transaction';
+import type { CNABType } from '../../types/common';
+
+import { sleep } from '../../utils/sleep';
+
+import styles from './styles.module.scss';
 
 export function isNegativeTransaction(type: CNABType) {
   const negativeTypes: CNABType[] = ['BANK_SLIP', 'FINANCING', 'RENT'];
@@ -18,19 +23,19 @@ export function isNegativeTransaction(type: CNABType) {
 
 export function StoreDetailsPage() {
   const { storeId } = useParams<{ storeId: string }>();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const storeName = (location.state as { storeName?: string })?.storeName;
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function loadTransactions() {
       if (!storeId) return;
       try {
         setIsLoading(true);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        sleep();
 
         const response = await fetchStoreTransactions(storeId);
         setTransactions(response.data);
@@ -61,7 +66,9 @@ export function StoreDetailsPage() {
         <h2> Transações da Loja {storeName ? `- ${storeName}` : ''}</h2>
 
         {isLoading ? (
-          <Spinner />
+          <div className={styles.loading}>
+            <Spinner />
+          </div>
         ) : transactions.length === 0 ? (
           <EmptyState
             title="Nenhuma transação encontrada"

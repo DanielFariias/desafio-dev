@@ -21,9 +21,51 @@
   }
 }
 
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-unit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-primary;
+  font-weight: 500;
+  margin-bottom: $spacing-unit * 2;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  svg {
+    stroke: $color-primary;
+  }
+}
+
 .container {
   max-width: 100%;
   overflow-x: auto;
+
+  h2 {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: $spacing-unit * 2;
+    color: $color-primary;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: 1.25rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .table {
@@ -54,26 +96,6 @@
   }
 }
 
-.backButton {
-  display: inline-flex;
-  align-items: center;
-  gap: $spacing-unit;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: $color-primary;
-  font-weight: 500;
-  margin-bottom: $spacing-unit * 2;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  svg {
-    stroke: $color-primary;
-  }
-}
-
 .positive {
   color: green;
   font-weight: 600;
@@ -88,4 +110,8 @@
   font-weight: 600;
   margin-top: $spacing-unit * 2;
   color: $color-primary;
+
+  text-align: right;
 }
+
+

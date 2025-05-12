@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
-import { fetchStores, type Store } from '../../services/stores';
+import React from 'react';
+
 import { UploadCard } from '../../components/upload-card';
 import { StoresTable } from '../../components/stores-table';
 
+import { fetchStores } from '../../services/stores';
+
+import type { Store } from '../../types/store';
+
 export function Dashboard() {
-  const [stores, setStores] = useState<Store[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [stores, setStores] = React.useState<Store[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   async function loadStores() {
     try {
@@ -20,7 +24,7 @@ export function Dashboard() {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     loadStores();
   }, []);
 

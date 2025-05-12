@@ -1,6 +1,8 @@
-import { type ReactNode, createContext, useContext, useState } from 'react';
-import { api } from '../services/api';
+import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
+import { api } from '../services/api';
 
 interface AuthContextData {
   token: string | null;
@@ -9,20 +11,21 @@ interface AuthContextData {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = React.createContext<AuthContextData>({} as AuthContextData);
 
 interface AuthProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [token, setToken] = useState<string | null>(() => {
+  const [token, setToken] = React.useState<string | null>(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
     }
     return storedToken;
   });
+
   const navigate = useNavigate();
 
   function login(newToken: string) {
@@ -48,5 +51,5 @@ export function AuthProvider({ children }: AuthProviderProps) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  return React.useContext(AuthContext);
 }
