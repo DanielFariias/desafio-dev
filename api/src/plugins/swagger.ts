@@ -11,6 +11,16 @@ export async function setupSwagger(app: FastifyInstance) {
           'API para importar e consultar transações financeiras (Desafio ByCoders)',
         version: '1.0.0',
       },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+      security: [{ bearerAuth: [] }],
     },
   });
 

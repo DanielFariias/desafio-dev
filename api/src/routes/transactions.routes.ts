@@ -17,6 +17,7 @@ export async function transactionsRoutes(fastify: FastifyInstance) {
     schema: {
       description: 'Upload CNAB (.txt) via multipart/form-data. Campo: file',
       tags: ['Transactions'],
+      security: [{ bearerAuth: [] }],
       consumes: ['multipart/form-data'],
       response: {
         201: {
@@ -40,6 +41,7 @@ export async function transactionsRoutes(fastify: FastifyInstance) {
     schema: {
       description: 'Listar transações de uma loja específica',
       tags: ['Transactions'],
+      security: [{ bearerAuth: [] }],
       params: {
         type: 'object',
         properties: {

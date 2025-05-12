@@ -11,6 +11,7 @@ export async function storesRoutes(fastify: FastifyInstance) {
     schema: {
       description: 'Listar todas as lojas com saldo e paginação',
       tags: ['Stores'],
+      security: [{ bearerAuth: [] }],
       querystring: {
         type: 'object',
         properties: {
