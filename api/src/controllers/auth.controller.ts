@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { UsersRepository } from '../repositories/users.repository';
+import { comparePassword } from '../helpers/password';
 
 export function loginController(usersRepository: UsersRepository) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
@@ -10,7 +11,13 @@ export function loginController(usersRepository: UsersRepository) {
 
     const user = await usersRepository.findByEmail(email);
 
-    if (!user || user.password !== password) {
+    if (!user) {
+      return reply.status(401).send({ error: 'Invalid credentials' });
+    }
+
+    const isPasswordValid = await comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
       return reply.status(401).send({ error: 'Invalid credentials' });
     }
 

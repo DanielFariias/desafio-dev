@@ -1,9 +1,47 @@
 import { FastifyInstance } from 'fastify';
 import { loginController } from '../controllers/auth.controller';
 import { PrismaUsersRepository } from '../repositories/prisma/prisma-users.repository';
+import { registerController } from '../controllers/register.controller';
 
 export async function authRoutes(fastify: FastifyInstance) {
   const usersRepository = new PrismaUsersRepository();
+
+  fastify.post('/auth/register', {
+    schema: {
+      tags: ['Auth'],
+      summary: 'Register new user',
+      body: {
+        type: 'object',
+        required: ['email', 'password'],
+        properties: {
+          email: {
+            type: 'string',
+            format: 'email',
+          },
+          password: { type: 'string', minLength: 6 },
+        },
+      },
+      response: {
+        201: {
+          description: 'User created successfully',
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+            },
+          },
+        },
+        409: {
+          description: 'User already exists',
+          type: 'object',
+          properties: {
+            error: { type: 'string' },
+          },
+        },
+      },
+    },
+    handler: registerController(usersRepository),
+  });
 
   fastify.post('/auth/login', {
     schema: {

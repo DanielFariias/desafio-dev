@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 
 export async function authMiddleware(app: FastifyInstance) {
   app.addHook('onRequest', async (request, reply) => {
-    const publicRoutes = ['/auth/login', '/docs'];
+    const publicRoutes = ['/auth/login', '/auth/register', '/docs'];
 
     const isPublic = publicRoutes.some((route) =>
       request.raw.url?.startsWith(route),
