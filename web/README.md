@@ -59,14 +59,14 @@ Ele se conecta a um backend (também do desafio) para permitir:
 
 ---
 
-## 💻 Como rodar localmente
+## 🚀 Como rodar o projeto
 
-### Pré-requisitos
+### 1️⃣ Pré-requisitos
 
 - Node.js 18+
 - Backend do projeto já rodando (`VITE_API_URL` apontando para ele)
 
-### Instalação
+### 2️⃣ Clone o repositório
 
 ```bash
 # Clone o projeto
@@ -77,9 +77,9 @@ cd desafio-dev/web
 npm install
 ```
 
-### Configuração
+### 3️⃣ Configure as variáveis de ambiente
 
-Crie um arquivo `.env` na raiz do projeto com a variável:
+Crie o arquivo `.env` na raiz do projeto:
 
 ```env
 VITE_API_URL=http://localhost:3333
@@ -87,7 +87,7 @@ VITE_API_URL=http://localhost:3333
 
 (ou a URL onde o backend está rodando)
 
-### Execução
+### 8️⃣ Rode o projeto
 
 ```bash
 # Iniciar o projeto em modo desenvolvimento
@@ -95,17 +95,6 @@ npm run dev
 ```
 
 Acesse em: [http://localhost:5173](http://localhost:5173)
-
----
-
-## ✔️ Scripts disponíveis
-
-```bash
-npm run dev       # Inicia em modo desenvolvimento
-npm run build     # Gera build de produção
-npm run preview   # Visualiza build de produção localmente
-npm run lint      # Roda ESLint para análise estática
-```
 
 ---
 
@@ -117,8 +106,6 @@ Projeto finalizado para entrega do desafio técnico com:
 - Responsividade completa
 - Estrutura pronta para escala
 - Cobertura completa das regras do desafio
-
-A aplicação foi pensada para refletir o padrão de projetos profissionais de mercado.
 
 ---
 
