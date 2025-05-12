@@ -36,5 +36,5 @@ model Transaction {
   storeId       String
   store         Store           @relation(fields: [storeId], references: [id])
 
-  @@unique([storeId, transactionAt, card, cpf, type])
+  @@unique([storeId, transactionAt, card, cpf, type, value])
 }
