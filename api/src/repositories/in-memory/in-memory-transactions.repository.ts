@@ -54,4 +54,34 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     this.transactions.push(transaction);
     return transaction;
   }
+
+  async findByStoreId(
+    storeId: string,
+    options: { page: number; limit: number; order?: 'asc' | 'desc' },
+  ) {
+    const { page, limit, order = 'desc' } = options;
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    const filteredTransactions = this.transactions.filter(
+      (tx) => tx.storeId === storeId,
+    );
+
+    const totalCount = filteredTransactions.length;
+
+    const transactions = filteredTransactions
+      .sort((a, b) => {
+        if (order === 'asc') {
+          return a.transactionAt.getTime() - b.transactionAt.getTime();
+        }
+        return b.transactionAt.getTime() - a.transactionAt.getTime();
+      })
+      .slice(start, end);
+
+    return {
+      data: transactions,
+      totalCount,
+      hasNextPage: end < totalCount,
+    };
+  }
 }

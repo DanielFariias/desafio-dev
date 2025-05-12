@@ -1,7 +1,10 @@
 import { FastifyInstance } from 'fastify';
 import { PrismaStoresRepository } from '../repositories/prisma/prisma-stores.repository';
 import { PrismaTransactionsRepository } from '../repositories/prisma/prisma-transactions.repository';
-import { uploadTransactionsController } from '../controllers/transactions.controller';
+import {
+  listTransactionsByStoreController,
+  uploadTransactionsController,
+} from '../controllers/transactions.controller';
 
 export async function transactionsRoutes(fastify: FastifyInstance) {
   const storesRepository = new PrismaStoresRepository();
@@ -28,5 +31,54 @@ export async function transactionsRoutes(fastify: FastifyInstance) {
       storesRepository,
       transactionsRepository,
     ),
+  });
+
+  fastify.get('/stores/:storeId/transactions', {
+    schema: {
+      description: 'Listar transações de uma loja específica',
+      tags: ['Transactions'],
+      params: {
+        type: 'object',
+        properties: {
+          storeId: { type: 'string' },
+        },
+        required: ['storeId'],
+      },
+      querystring: {
+        type: 'object',
+        properties: {
+          page: { type: 'integer', minimum: 1 },
+          limit: { type: 'integer', minimum: 1 },
+          order: { type: 'string', enum: ['asc', 'desc'] },
+        },
+      },
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            page: { type: 'integer' },
+            limit: { type: 'integer' },
+            totalCount: { type: 'integer' },
+            hasNextPage: { type: 'boolean' },
+            data: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  storeId: { type: 'string' },
+                  transactionAt: { type: 'string', format: 'date-time' },
+                  value: { type: 'number' },
+                  cpf: { type: 'string' },
+                  card: { type: 'string' },
+                  type: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    handler: listTransactionsByStoreController(transactionsRepository),
   });
 }

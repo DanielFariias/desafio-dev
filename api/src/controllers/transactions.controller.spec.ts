@@ -4,6 +4,7 @@ import multipart from '@fastify/multipart';
 import { Readable } from 'stream';
 import FormData from 'form-data';
 
+import { InMemoryTransactionsRepository } from '../../src/repositories/in-memory/in-memory-transactions.repository';
 import { InMemoryStoresRepository } from '../../src/repositories/in-memory/in-memory-stores.repository';
 import { uploadTransactionsController } from '../../src/controllers/transactions.controller';
 import { setupFastifyTransactions } from '../tests/helpers/setup-fastify-transactions';
@@ -25,9 +26,10 @@ function createUploadForm(content: string) {
 
 describe('Transactions Controller', () => {
   let app: FastifyInstance;
+  let transactionsRepository: InMemoryTransactionsRepository;
 
   beforeEach(async () => {
-    ({ app } = await setupFastifyTransactions());
+    ({ app, transactionsRepository } = await setupFastifyTransactions());
   });
 
   it('should process CNAB lines and store transactions', async () => {
@@ -155,6 +157,11 @@ describe('Transactions Controller', () => {
         throw new Error('Unexpected error');
       },
       findByUniqueKey: async () => null,
+      findByStoreId: async () => ({
+        data: [],
+        totalCount: 0,
+        hasNextPage: false,
+      }),
     };
     const storesRepository = new InMemoryStoresRepository();
 
@@ -181,5 +188,45 @@ describe('Transactions Controller', () => {
     });
 
     expect(response.statusCode).toBe(500);
+  });
+
+  it('should return empty array if no transactions', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: `/stores/test-store-id/transactions`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.data).toEqual([]);
+  });
+
+  it('should return paginated transactions', async () => {
+    const storeId = 'store-123';
+
+    for (let i = 0; i < 15; i++) {
+      await transactionsRepository.create({
+        type: 'DEBIT',
+        transactionAt: new Date(
+          `2024-05-${String(i + 1).padStart(2, '0')}T00:00:00Z`,
+        ),
+        value: 100,
+        cpf: '12345678901',
+        card: '123456789012',
+        storeId,
+      });
+    }
+
+    const response = await app.inject({
+      method: 'GET',
+      url: `/stores/${storeId}/transactions?page=2&limit=5&order=asc`,
+    });
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.page).toBe(2);
+    expect(body.limit).toBe(5);
+    expect(body.data.length).toBe(5);
+    expect(body.totalCount).toBe(15);
   });
 });

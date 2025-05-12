@@ -13,10 +13,6 @@ export async function app(fastify: FastifyInstance) {
   fastify.register(fastifyMultipart);
   await setupSwagger(fastify);
 
-  fastify.get('/', async () => {
-    return { message: 'Hello World!' };
-  });
-
   fastify.register(transactionsRoutes);
   fastify.register(storesRoutes);
 

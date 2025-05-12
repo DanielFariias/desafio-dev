@@ -3,7 +3,10 @@ import fastifyMultipart from '@fastify/multipart';
 
 import { InMemoryTransactionsRepository } from '../../repositories/in-memory/in-memory-transactions.repository';
 import { InMemoryStoresRepository } from '../../repositories/in-memory/in-memory-stores.repository';
-import { uploadTransactionsController } from '../../controllers/transactions.controller';
+import {
+  listTransactionsByStoreController,
+  uploadTransactionsController,
+} from '../../controllers/transactions.controller';
 
 export async function setupFastifyTransactions() {
   const app = fastify();
@@ -15,6 +18,11 @@ export async function setupFastifyTransactions() {
   app.post(
     '/transactions/upload',
     uploadTransactionsController(storesRepository, transactionsRepository),
+  );
+
+  app.get(
+    '/stores/:storeId/transactions',
+    listTransactionsByStoreController(transactionsRepository),
   );
 
   await app.ready();

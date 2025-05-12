@@ -6,6 +6,8 @@ import { parseCNABLine } from '../helpers/parseCNABLine';
 import { StoresRepository } from '../repositories/stores.repository';
 import { TransactionsRepository } from '../repositories/transactions.repository';
 import { isPrismaDuplicateError } from '../utils/isPrismaDuplicateError';
+import { StoreQueryParams } from '../types/store';
+import { getPaginationParams } from '../helpers/getPaginationParams';
 
 export function uploadTransactionsController(
   storesRepository: StoresRepository,
@@ -71,6 +73,31 @@ export function uploadTransactionsController(
       inserted: totalTransactions,
       duplicates: duplicatedTransactions,
       invalid: invalidLines,
+    });
+  };
+}
+
+export function listTransactionsByStoreController(
+  transactionsRepository: TransactionsRepository,
+) {
+  return async (request: FastifyRequest, reply: FastifyReply) => {
+    const { storeId } = request.params as { storeId: string };
+
+    const query = request.query as StoreQueryParams;
+    const { page, limit } = getPaginationParams(query);
+
+    const result = await transactionsRepository.findByStoreId(storeId, {
+      page: Number(page),
+      limit: Number(limit),
+      order: query.order === 'asc' ? 'asc' : 'desc',
+    });
+
+    return reply.send({
+      page: Number(page),
+      limit: Number(limit),
+      totalCount: result.totalCount,
+      hasNextPage: result.hasNextPage,
+      data: result.data,
     });
   };
 }
